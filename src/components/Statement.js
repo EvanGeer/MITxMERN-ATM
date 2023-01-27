@@ -5,10 +5,7 @@ export function Statement({onGoBack, statement}) {
     onGoBack();
   };
 
-  const currency = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "USD",
-  });
+
 
   return (
     <>
