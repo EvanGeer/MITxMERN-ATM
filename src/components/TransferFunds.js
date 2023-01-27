@@ -1,6 +1,6 @@
 import React from "react";
 
-export function TransferFunds({onSubmit, isWithdrawal, balance}) {
+export function TransferFunds({onSubmit, isWithdrawal, balance, onGoBack}) {
   const [value, setValue] = React.useState();
   const [isOverdraft, setIsOverdraft] = React.useState();
   const [isNegativeInput, setIsNegativeInput] = React.useState();
@@ -31,8 +31,6 @@ export function TransferFunds({onSubmit, isWithdrawal, balance}) {
     onSubmit(value, isWithdrawal);
   };
 
-  const handleGoBack = () => onSubmit(0);
-
   return (
     <>
       <input
@@ -48,7 +46,7 @@ export function TransferFunds({onSubmit, isWithdrawal, balance}) {
       ) : null}
       {isOverdraft ? <div class="error">Insufficient funds</div> : null}
       <div className="grid-container">
-        <button className="col col1" type="toggle" onClick={handleGoBack}>
+        <button className="col col1" type="toggle" onClick={onGoBack}>
           Go Back
         </button>
         <button

@@ -1,10 +1,10 @@
 import React from "react";
 
-export function Withdrawal({onSubmit, balance}) {
+export function Withdrawal({onSubmit, balance, onGoBack}) {
     const handleSubmit = (e) => {
-        let nav = e.target.textContent;
-        console.log(nav);
-        onSubmit(nav);
+        let dollarAmount = e.target.textContent;
+        console.log(dollarAmount);
+        onSubmit(dollarAmount);
     }
 
     const atLeast = (val) => {
@@ -37,6 +37,6 @@ export function Withdrawal({onSubmit, balance}) {
           $200
         </button>
       </div>
-      <button className="col" onClick={handleSubmit}>Go Back</button>
+      <button className="col" onClick={onGoBack}>Go Back</button>
     </>);
 }

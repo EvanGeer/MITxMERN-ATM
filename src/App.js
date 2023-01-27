@@ -1,11 +1,12 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
-import { Withdrawal } from "./Withdrawl";
-import { MainMenu } from "./MainMenu";
-import { menuButtons } from "./menuButtons";
-import { TransferFunds } from "./TransferFunds";
-import { Statement } from "./Statement";
+
+// components
+import { Withdrawal } from "./components/Withdrawl";
+import { MainMenu, menuButtons } from "./components/MainMenu";
+import { Statement } from "./components/Statement";
+import { TransferFunds } from "./components/TransferFunds";
 
 const beginningBalance = 70;
 function App() {
@@ -16,11 +17,11 @@ function App() {
     amount: beginningBalance,
     total: beginningBalance}]);
 
-  const mainMenu = menuButtons.mainMenu;
 
+  const goBack = () => handleNav(menuButtons.mainMenu);
   const handleNav = (buttonClick) => {
     console.log(`handle nav: ${buttonClick}`);
-    console.log(buttonClick == menuButtons.statement)
+
     switch(buttonClick) {
       case menuButtons.statement: 
       case menuButtons.mainMenu: 
@@ -28,23 +29,27 @@ function App() {
       case menuButtons.withdrawal:
       case menuButtons.transfer:
       case 'Satement': 
-        console.log('setting current to button name')
-        setCurrentScreen(buttonClick);
-        break;
+        console.log(`setting current to ${buttonClick}`)
+        return setCurrentScreen(buttonClick);
+      
       case menuButtons.quickCash80:
-        handleTransfer(80, true);
+        console.log(`handle quick cash: ${buttonClick}`)
+        return handleTransfer(80, true);
+      
       default:
         console.warn('button not mapped')
         break;
-
     }
   }
 
   const handleTransfer = (val, isWithdrawal=true) => {
+    console.log(`Is Withdrawal: ${isWithdrawal}, ${val}`)
     let transfer = 
-      typeof(val) === 'number' ? val
-      : typeof(val) === 'string' ? Number(val.replace('\$',''))
+      typeof(val) === 'number' ? Number(val)
+      : typeof(val) === 'string' ? Number(val.replace('$',''))
       : null;
+
+    console.log(`Parsed Transfer: ${transfer}`)
 
     if (transfer === null || transfer < 0) 
     {
@@ -55,35 +60,19 @@ function App() {
     handleNav(menuButtons.mainMenu);
     if (transfer === 0) return; // no need to record +/- $0.00
 
-
+    // update balance
     let newBalance = isWithdrawal 
       ? balance - transfer
       : balance + transfer;
     setBalance(newBalance);
 
+    // update statement
     let newStatement = [...statement, {
       description: isWithdrawal ? 'Withdrawal' : 'Deposit',
-      amount: val,
+      amount: transfer,
       total: newBalance}];
     setStatement(newStatement);
   }
-
-  // const handleWithdrawal = (text) => {
-  //   handleNav(menuButtons.mainMenu);
-
-  //   console.log(text);
-  //   let value = Number(text.replace('\$',''));
-  //   console.log(value);
-  //   if (!value || value <= 0) return;
-
-  //   let newBalance = balance-value;
-  //   setBalance(newBalance);
-  //   let newStatement = [...statement, {
-  //     description:'Withdrawal',
-  //     amount: value,
-  //     total: newBalance}];
-  //     setStatement(newStatement);
-  // }
 
   console.log(currentScreen);
 
@@ -91,23 +80,49 @@ function App() {
     <>
       <div className="App">
         <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-          <h1>
-            Welcome to React Bank
-          </h1>
-          <h3>Current Balance: ${balance}
-          </h3>
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1>Welcome to React Bank</h1>
+          <h3>Current Balance: ${balance}</h3>
           {
+            // swap out components per navigation
             {
-              [menuButtons.deposit]:<TransferFunds onSubmit={handleTransfer} isWithdrawal={false} balance={balance}/>,
-              [menuButtons.withdrawal]:<Withdrawal onSubmit={handleTransfer} balance={balance}/>,
-              [menuButtons.statement]: <Statement onNav={handleNav} statement={statement}/>,
-              [menuButtons.mainMenu]: <MainMenu onNav={handleNav} balance={balance}/>,
-              [menuButtons.transfer]: <TransferFunds onSubmit={handleTransfer} isWithdrawal={true} balance={balance}/>,
-              default: <MainMenu onNav={handleNav} balance={balance}/>,
-            }[currentScreen] 
+              [menuButtons.deposit]: (
+                <TransferFunds
+                  onSubmit={handleTransfer}
+                  onGoBack={goBack}
+                  isWithdrawal={false}
+                  balance={balance}
+                />
+              ),
+
+              [menuButtons.withdrawal]: (
+                <Withdrawal
+                  onSubmit={handleTransfer}
+                  onGoBack={goBack}
+                  balance={balance}
+                />
+              ),
+
+              [menuButtons.statement]: (
+                <Statement onGoBack={goBack} statement={statement} />
+              ),
+
+              [menuButtons.mainMenu]: (
+                <MainMenu onNav={handleNav} balance={balance} />
+              ),
+
+              [menuButtons.transfer]: (
+                <TransferFunds
+                  onSubmit={handleTransfer}
+                  onGoBack={goBack}
+                  isWithdrawal={true}
+                  balance={balance}
+                />
+              ),
+
+              default: <MainMenu onNav={handleNav} balance={balance} />,
+            }[currentScreen]
           }
-          {/* <Statement onNav={handleNav} statement={statement}/> */}
         </header>
       </div>
     </>

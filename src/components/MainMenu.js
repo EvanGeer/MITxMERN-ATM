@@ -1,6 +1,13 @@
 import React from "react";
-import { menuButtons } from "./menuButtons";
-import { Withdrawal } from "./Withdrawl";
+
+export const menuButtons = {
+  mainMenu: 'Main Menu',
+  withdrawal: 'Cash Withdrawal',
+  deposit: 'Deposit',
+  quickCash80: 'Quick Cash $80',
+  statement: 'Statement',
+  transfer: 'Transfer Out',
+};
 
 export function MainMenu({onNav, balance}) {
     const handleClick = (e) => {
