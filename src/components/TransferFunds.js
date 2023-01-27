@@ -15,7 +15,7 @@ export function TransferFunds({onSubmit, isWithdrawal, balance, onGoBack, custom
       ? customValidation(value) 
       : null;
       console.log(custom);
-    setIsCustomFailure(!custom.result ?? false);
+    setIsCustomFailure(!custom?.result ?? false);
     setCustomValidationMessage(custom?.message);
   }, [value]);
 

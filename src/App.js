@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
+import { currency } from './currencySettings'
 
 // components
 import { Withdrawal } from "./components/Withdrawl";
@@ -82,7 +83,7 @@ function App() {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1>Welcome to React Bank</h1>
-          <h3>Current Balance: ${balance}</h3>
+          <h3>Current Balance: {currency.format(balance)}</h3>
           {
             // swap out components per navigation
             {

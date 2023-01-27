@@ -1,5 +1,6 @@
 import React from "react";
 import {TransferFunds} from "./TransferFunds"
+import { currency } from "../currencySettings";
 
 export function Withdrawal({onSubmit, balance, onGoBack}) {
     const handleSubmit = (e) => {
@@ -9,7 +10,7 @@ export function Withdrawal({onSubmit, balance, onGoBack}) {
     }
 
     const atLeast = (val) => {
-        return val >= balance ? true : '';
+        return val > balance ? true : '';
     }
 
     const isIncrementOf20 = (val) => {
