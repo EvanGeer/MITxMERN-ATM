@@ -33,6 +33,12 @@
   grid-template-columns: 250px 250px;
 }
 
+.span-cols {
+  grid-column: 1 / 2;
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
 .col {
   padding: 8px;
   margin: 6px;
@@ -52,6 +58,9 @@ button {
 button:hover {
   background-color: #61dafb88;
 }
+button:disabled:hover {
+  background-color: #61dafbdd;
+}
 
 .invalid{
   border: red 2px solid;
@@ -60,13 +69,13 @@ button:hover {
 small {
   font-style: italic;
   color: gray;
+  font-size:medium;
 }
 
 .t-entry {
-  grid-column-start: 1;
-  grid-column-end: span;
+  grid-column: 1 / span 2;
   padding: 8px;
-  margin: 4px 4px 20px 4px ;
+  margin: 4px 80px ;
   border-radius: 8px;
   
   /* -ms-grid-column-span: 2; */
