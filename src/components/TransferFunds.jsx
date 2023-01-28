@@ -9,26 +9,28 @@ export function TransferFunds({onSubmit, isWithdrawal, balance, onGoBack, custom
   const [customValidationMessage, setCustomValidationMessage] = React.useState();
 
   React.useEffect(() => {
-    setIsOverdraft(isWithdrawal && balance - value < 0);
-    setIsNegativeInput(value < 0);
+    // updates validation after render 
+    // so that state is accurately reflected
+    let overdraft = isWithdrawal && balance - value < 0;
+    setIsOverdraft(overdraft);
+
+    let negative = value < 0;
+    setIsNegativeInput(negative);
+
     let custom = customValidation 
       ? customValidation(value) 
       : null;
       console.log(custom);
     setIsCustomFailure(!custom?.result ?? false);
     setCustomValidationMessage(custom?.message);
-  }, [value]);
 
-  React.useEffect(() => {
-    console.log(`Calculate is valid - overdraft: ${isOverdraft}`)
-    console.log(`Calculate is valid - negative: ${isNegativeInput}`)
-    console.log(`Calculate is valid - additional: ${isCustomFailure}`)
-      let valid = !value 
-        || (!isOverdraft && !isNegativeInput && !isCustomFailure);
-      setIsValid(valid)
-
-    },[isNegativeInput, isOverdraft, isCustomFailure]
-  );
+    console.log(`Calculate is valid - overdraft: ${overdraft}`)
+    console.log(`Calculate is valid - negative: ${negative}`)
+    console.log(`Calculate is valid - additional: ${custom}`)
+    let valid = !value 
+      || (!overdraft && !negative && !custom);
+    setIsValid(valid)
+  }, [value, balance, customValidation, isWithdrawal]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
