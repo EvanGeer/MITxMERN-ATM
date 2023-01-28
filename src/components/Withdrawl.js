@@ -1,6 +1,5 @@
 import React from "react";
-import {TransferFunds} from "./TransferFunds"
-import { currency } from "../currencySettings";
+import {TransferFunds} from "./TransferFunds";
 
 export function Withdrawal({onSubmit, balance, onGoBack}) {
     const handleSubmit = (e) => {

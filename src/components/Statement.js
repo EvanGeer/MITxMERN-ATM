@@ -1,11 +1,10 @@
 import { Fragment } from "../../node_modules/react/cjs/react.development";
+import { currency } from "../currencySettings";
 
 export function Statement({onGoBack, statement}) {
   const handleSubmit = () => {
     onGoBack();
   };
-
-
 
   return (
     <>

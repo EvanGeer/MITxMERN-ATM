@@ -3,8 +3,7 @@
 Simple application to demonstrate React Components and Hooks.
 
 ## Sample Image
-![sample Iamge](sampleIamge.gif)
-
+![sampleImage](./sampleIamge.gif)
 
 
 # Getting Started with Create React App
