@@ -9,14 +9,16 @@ import { MainMenu, menuButtons } from "./components/MainMenu";
 import { Statement } from "./components/Statement";
 import { TransferFunds } from "./components/TransferFunds";
 
-const beginningBalance = 70;
+const beginningBalance = Number(localStorage.getItem('balance')) ?? 70;
+const beginningStatement = JSON.parse(localStorage.getItem('statement')) || [{
+  description:'Beginning Balance',
+  amount: beginningBalance,
+  total: beginningBalance}];
+
 function App() {
   const [currentScreen, setCurrentScreen] = React.useState(menuButtons.mainMenu);
   const [balance, setBalance] = React.useState(beginningBalance);
-  const [statement, setStatement] = React.useState([{
-    description:'Beginning Balance',
-    amount: beginningBalance,
-    total: beginningBalance}]);
+  const [statement, setStatement] = React.useState(beginningStatement);
 
 
   const goBack = () => handleNav(menuButtons.mainMenu);
@@ -66,6 +68,7 @@ function App() {
       ? balance - transfer
       : balance + transfer;
     setBalance(newBalance);
+    localStorage.setItem('balance',newBalance);
 
     // update statement
     let newStatement = [...statement, {
@@ -73,6 +76,8 @@ function App() {
       amount: transfer,
       total: newBalance}];
     setStatement(newStatement);
+    let json = JSON.stringify(newStatement);
+    localStorage.setItem('statement',json);
   }
 
   console.log(currentScreen);
